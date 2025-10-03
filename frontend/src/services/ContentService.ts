@@ -8,12 +8,19 @@ class ContentService {
   async findAll(
     courseId: string,
     contentQuery: ContentQuery,
-  ): Promise<Content[]> {
+  ): Promise<{ data: Content[]; total: number; page: number; limit: number }> {
     return (
-      await apiService.get<Content[]>(`/api/courses/${courseId}/contents`, {
+      await apiService.get<{ data: Content[]; total: number; page: number; limit: number }>(`/api/courses/${courseId}/contents`, {
         params: contentQuery,
       })
     ).data;
+  }
+
+  async findAllByCourseId(
+    courseId: string,
+    contentQuery: ContentQuery,
+  ): Promise<{ data: Content[]; total: number; page: number; limit: number }> {
+    return this.findAll(courseId, contentQuery);
   }
 
   async save(

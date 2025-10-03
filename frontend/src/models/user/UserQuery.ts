@@ -1,6 +1,7 @@
 export default interface UserQuery {
-  firstName: string;
-  lastName: string;
-  username: string;
-  role: string;
+  search?: string;
+  sortBy?: string;
+  sortOrder?: 'ASC' | 'DESC';
+  page?: number;
+  limit?: number;
 }

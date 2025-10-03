@@ -9,9 +9,9 @@ class UserService {
     await apiService.post('/api/courses', createCourseRequest);
   }
 
-  async findAll(courseQuery: CourseQuery): Promise<Course[]> {
+  async findAll(courseQuery: CourseQuery): Promise<{ data: Course[]; total: number; page: number; limit: number }> {
     return (
-      await apiService.get<Course[]>('/api/courses', { params: courseQuery })
+      await apiService.get<{ data: Course[]; total: number; page: number; limit: number }>('/api/courses', { params: courseQuery })
     ).data;
   }
 

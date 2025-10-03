@@ -1,4 +1,7 @@
 export default interface ContentQuery {
-  name?: string;
-  description?: string;
+  search?: string;
+  sortBy?: string;
+  sortOrder?: 'ASC' | 'DESC';
+  page?: number;
+  limit?: number;
 }
