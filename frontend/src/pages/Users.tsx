@@ -58,59 +58,61 @@ export default function Users() {
 
   return (
     <Layout>
-      <h1 className="font-semibold text-3xl mb-5">Manage Users</h1>
-      <hr />
-      <button
-        className="btn my-5 flex gap-2 w-full sm:w-auto justify-center"
-        onClick={() => setAddUserShow(true)}
-      >
-        <Plus /> Add User
-      </button>
-
-      <div className="table-filter mt-2">
-        <div className="flex flex-row gap-5">
-          <input
-            type="text"
-            className="input w-1/2"
-            placeholder="First Name"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-          <input
-            type="text"
-            className="input w-1/2"
-            placeholder="Last Name"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-          />
-        </div>
-        <div className="flex flex-row gap-5">
-          <input
-            type="text"
-            className="input w-1/2"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
-          <select
-            name=""
-            id=""
-            className="input w-1/2"
-            value={role}
-            onChange={(e) => setRole(e.target.value)}
-          >
-            <option value="">All</option>
-            <option value="user">User</option>
-            <option value="editor">Editor</option>
-            <option value="admin">Admin</option>
-          </select>
-        </div>
+      <div className="main-header">
+        <h1 className="font-semibold text-2xl text-gray-700">Manage Users</h1>
       </div>
+      <div className="main-content">
+        <button
+          className="btn mb-4 flex gap-2 w-full sm:w-auto justify-center items-center"
+          onClick={() => setAddUserShow(true)}
+        >
+          <Plus size={20} /> Add User
+        </button>
 
-      <UsersTable data={data} isLoading={isLoading} />
+        <div className="flex flex-col gap-4 mb-6">
+          <div className="flex flex-row gap-5">
+            <input
+              type="text"
+              className="input w-1/2 border-gray-300 rounded-md px-3 py-2"
+              placeholder="First Name"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
+            <input
+              type="text"
+              className="input w-1/2 border-gray-300 rounded-md px-3 py-2"
+              placeholder="Last Name"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
+          </div>
+          <div className="flex flex-row gap-5">
+            <input
+              type="text"
+              className="input w-1/2 border-gray-300 rounded-md px-3 py-2"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <select
+              name=""
+              id=""
+              className="input w-1/2 border-gray-300 rounded-md px-3 py-2"
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+            >
+              <option value="">All</option>
+              <option value="user">User</option>
+              <option value="editor">Editor</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+        </div>
 
-      {/* Add User Modal */}
-      <Modal show={addUserShow}>
+        <UsersTable data={data} isLoading={isLoading} />
+
+        {/* Add User Modal */}
+        <Modal show={addUserShow}>
         <div className="flex">
           <h1 className="font-semibold mb-3">Add User</h1>
           <button
@@ -188,6 +190,7 @@ export default function Users() {
           ) : null}
         </form>
       </Modal>
+      </div>
     </Layout>
   );
 }
