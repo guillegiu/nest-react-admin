@@ -79,4 +79,12 @@ export class CourseService {
   async count(): Promise<number> {
     return await Course.count();
   }
+
+  async findRecent(): Promise<Course[]> {
+    return await this.courseRepository
+      .createQueryBuilder('course')
+      .orderBy('course.dateCreated', 'DESC')
+      .limit(5)
+      .getMany();
+  }
 }

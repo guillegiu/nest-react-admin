@@ -6,6 +6,7 @@ import Contents from './pages/Contents';
 import Courses from './pages/Courses';
 import Dashboard from './pages/Dashboard';
 import Login from './pages/Login';
+import Profile from './pages/Profile';
 import Users from './pages/Users';
 import { AuthRoute, PrivateRoute } from './Route';
 import authService from './services/AuthService';
@@ -46,6 +47,8 @@ export default function App() {
         <PrivateRoute exact path="/courses" component={Courses} />
         {/* @ts-ignore */}
         <PrivateRoute exact path="/courses/:id" component={Contents} />
+        {/* @ts-ignore */}
+        <PrivateRoute exact path="/profile" component={Profile} />
 
         {/* @ts-ignore */}
         <AuthRoute exact path="/login" component={Login} />

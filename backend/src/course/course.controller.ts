@@ -45,6 +45,11 @@ export class CourseController {
     return await this.courseService.findAll(courseQuery);
   }
 
+  @Get('/recent')
+  async findRecent(): Promise<Course[]> {
+    return await this.courseService.findRecent();
+  }
+
   @Get('/:id')
   async findOne(@Param('id') id: string): Promise<Course> {
     return await this.courseService.findById(id);

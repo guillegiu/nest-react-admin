@@ -1,7 +1,6 @@
 import React from 'react';
-import { BookOpen, Home, LogOut, Users } from 'react-feather';
-import { useHistory } from 'react-router-dom';
-import { Link } from 'react-router-dom';
+import { BookOpen, Home, LogOut, User, Users } from 'react-feather';
+import { Link, useHistory } from 'react-router-dom';
 
 import useAuth from '../../hooks/useAuth';
 import authService from '../../services/AuthService';
@@ -46,6 +45,9 @@ export default function Sidebar({ className }: SidebarProps) {
         </SidebarItem>
         <SidebarItem to="/courses">
           <BookOpen /> Courses
+        </SidebarItem>
+        <SidebarItem to="/profile">
+          <User /> Profile
         </SidebarItem>
         {authenticatedUser.role === 'admin' ? (
           <SidebarItem to="/users">

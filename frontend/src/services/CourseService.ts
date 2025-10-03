@@ -29,6 +29,10 @@ class UserService {
   async delete(id: string): Promise<void> {
     await apiService.delete(`/api/courses/${id}`);
   }
+
+  async findRecent(): Promise<Course[]> {
+    return (await apiService.get<Course[]>('/api/courses/recent')).data;
+  }
 }
 
 export default new UserService();
