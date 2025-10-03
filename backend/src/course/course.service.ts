@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { ILike } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 import { CreateCourseDto, UpdateCourseDto } from './course.dto';
 import { Course } from './course.entity';
@@ -7,6 +8,11 @@ import { CourseQuery } from './course.query';
 
 @Injectable()
 export class CourseService {
+  constructor(
+    @InjectRepository(Course)
+    private courseRepository: Repository<Course>,
+  ) {}
+
   async save(createCourseDto: CreateCourseDto): Promise<Course> {
     return await Course.create({
       ...createCourseDto,
@@ -14,17 +20,37 @@ export class CourseService {
     }).save();
   }
 
-  async findAll(courseQuery: CourseQuery): Promise<Course[]> {
-    Object.keys(courseQuery).forEach((key) => {
-      courseQuery[key] = ILike(`%${courseQuery[key]}%`);
-    });
-    return await Course.find({
-      where: courseQuery,
-      order: {
-        name: 'ASC',
-        description: 'ASC',
-      },
-    });
+  async findAll(courseQuery: CourseQuery): Promise<{ data: Course[]; total: number; page: number; limit: number }> {
+    const { search, sortBy, sortOrder, page = 1, limit = 10 } = courseQuery;
+
+    const queryBuilder = this.courseRepository.createQueryBuilder('course');
+
+    if (search) {
+      queryBuilder.where(
+        '(course.name ILIKE :search OR course.description ILIKE :search)',
+        { search: `%${search}%` }
+      );
+    }
+
+    if (sortBy) {
+      const validSortFields = ['name', 'description', 'dateCreated'];
+      const field = validSortFields.includes(sortBy) ? sortBy : 'dateCreated';
+      queryBuilder.orderBy(`course.${field}`, sortOrder || 'ASC');
+    } else {
+      queryBuilder.orderBy('course.dateCreated', 'DESC');
+    }
+
+    const offset = (page - 1) * limit;
+    queryBuilder.skip(offset).take(limit);
+
+    const [data, total] = await queryBuilder.getManyAndCount();
+
+    return {
+      data,
+      total,
+      page,
+      limit,
+    };
   }
 
   async findById(id: string): Promise<Course> {

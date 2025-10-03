@@ -1,5 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { ILike } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 import { CourseService } from '../course/course.service';
 import { CreateContentDto, UpdateContentDto } from './content.dto';
@@ -8,7 +9,11 @@ import { ContentQuery } from './content.query';
 
 @Injectable()
 export class ContentService {
-  constructor(private readonly courseService: CourseService) {}
+  constructor(
+    private readonly courseService: CourseService,
+    @InjectRepository(Content)
+    private contentRepository: Repository<Content>,
+  ) {}
 
   async save(
     courseId: string,
@@ -24,18 +29,37 @@ export class ContentService {
     }).save();
   }
 
-  async findAll(contentQuery: ContentQuery): Promise<Content[]> {
-    Object.keys(contentQuery).forEach((key) => {
-      contentQuery[key] = ILike(`%${contentQuery[key]}%`);
-    });
+  async findAll(contentQuery: ContentQuery): Promise<{ data: Content[]; total: number; page: number; limit: number }> {
+    const { search, sortBy, sortOrder, page = 1, limit = 10 } = contentQuery;
 
-    return await Content.find({
-      where: contentQuery,
-      order: {
-        name: 'ASC',
-        description: 'ASC',
-      },
-    });
+    const queryBuilder = this.contentRepository.createQueryBuilder('content');
+
+    if (search) {
+      queryBuilder.where(
+        '(content.name ILIKE :search OR content.description ILIKE :search)',
+        { search: `%${search}%` }
+      );
+    }
+
+    if (sortBy) {
+      const validSortFields = ['name', 'description', 'dateCreated'];
+      const field = validSortFields.includes(sortBy) ? sortBy : 'dateCreated';
+      queryBuilder.orderBy(`content.${field}`, sortOrder || 'ASC');
+    } else {
+      queryBuilder.orderBy('content.dateCreated', 'DESC');
+    }
+
+    const offset = (page - 1) * limit;
+    queryBuilder.skip(offset).take(limit);
+
+    const [data, total] = await queryBuilder.getManyAndCount();
+
+    return {
+      data,
+      total,
+      page,
+      limit,
+    };
   }
 
   async findById(id: string): Promise<Content> {
@@ -65,17 +89,38 @@ export class ContentService {
   async findAllByCourseId(
     courseId: string,
     contentQuery: ContentQuery,
-  ): Promise<Content[]> {
-    Object.keys(contentQuery).forEach((key) => {
-      contentQuery[key] = ILike(`%${contentQuery[key]}%`);
-    });
-    return await Content.find({
-      where: { courseId, ...contentQuery },
-      order: {
-        name: 'ASC',
-        description: 'ASC',
-      },
-    });
+  ): Promise<{ data: Content[]; total: number; page: number; limit: number }> {
+    const { search, sortBy, sortOrder, page = 1, limit = 10 } = contentQuery;
+
+    const queryBuilder = this.contentRepository.createQueryBuilder('content')
+      .where('content.courseId = :courseId', { courseId });
+
+    if (search) {
+      queryBuilder.andWhere(
+        '(content.name ILIKE :search OR content.description ILIKE :search)',
+        { search: `%${search}%` }
+      );
+    }
+
+    if (sortBy) {
+      const validSortFields = ['name', 'description', 'dateCreated'];
+      const field = validSortFields.includes(sortBy) ? sortBy : 'dateCreated';
+      queryBuilder.orderBy(`content.${field}`, sortOrder || 'ASC');
+    } else {
+      queryBuilder.orderBy('content.dateCreated', 'DESC');
+    }
+
+    const offset = (page - 1) * limit;
+    queryBuilder.skip(offset).take(limit);
+
+    const [data, total] = await queryBuilder.getManyAndCount();
+
+    return {
+      data,
+      total,
+      page,
+      limit,
+    };
   }
 
   async update(

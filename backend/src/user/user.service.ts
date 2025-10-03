@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { ILike } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 import { CreateUserDto, UpdateUserDto } from './user.dto';
 import { User } from './user.entity';
@@ -8,6 +9,11 @@ import { UserQuery } from './user.query';
 
 @Injectable()
 export class UserService {
+  constructor(
+    @InjectRepository(User)
+    private userRepository: Repository<User>,
+  ) {}
+
   async save(createUserDto: CreateUserDto): Promise<User> {
     const user = await this.findByUsername(createUserDto.username);
 
@@ -23,20 +29,37 @@ export class UserService {
     return User.create(createUserDto).save();
   }
 
-  async findAll(userQuery: UserQuery): Promise<User[]> {
-    Object.keys(userQuery).forEach((key) => {
-      if (key !== 'role') {
-        userQuery[key] = ILike(`%${userQuery[key]}%`);
-      }
-    });
+  async findAll(userQuery: UserQuery): Promise<{ data: User[]; total: number; page: number; limit: number }> {
+    const { search, sortBy, sortOrder, page = 1, limit = 10 } = userQuery;
 
-    return User.find({
-      where: userQuery,
-      order: {
-        firstName: 'ASC',
-        lastName: 'ASC',
-      },
-    });
+    const queryBuilder = this.userRepository.createQueryBuilder('user');
+
+    if (search) {
+      queryBuilder.where(
+        '(user.firstName ILIKE :search OR user.lastName ILIKE :search OR user.username ILIKE :search)',
+        { search: `%${search}%` }
+      );
+    }
+
+    if (sortBy) {
+      const validSortFields = ['firstName', 'lastName', 'username', 'role', 'dateCreated'];
+      const field = validSortFields.includes(sortBy) ? sortBy : 'dateCreated';
+      queryBuilder.orderBy(`user.${field}`, sortOrder || 'ASC');
+    } else {
+      queryBuilder.orderBy('user.dateCreated', 'DESC');
+    }
+
+    const offset = (page - 1) * limit;
+    queryBuilder.skip(offset).take(limit);
+
+    const [data, total] = await queryBuilder.getManyAndCount();
+
+    return {
+      data,
+      total,
+      page,
+      limit,
+    };
   }
 
   async findById(id: string): Promise<User> {
