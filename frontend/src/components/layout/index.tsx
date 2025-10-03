@@ -11,9 +11,9 @@ export default function Layout({ children }: LayoutProps) {
   const [showSidebar, setShowSidebar] = useState(false);
 
   return (
-    <>
+    <div className="flex h-screen">
       <Sidebar className={showSidebar ? 'show' : ''} />
-      <div className="pt-10 lg:ml-72 mx-auto px-5 sm:px-10 py-5">
+      <div className="flex-1 flex flex-col lg:ml-72">
         {children}
       </div>
       <button
@@ -24,6 +24,6 @@ export default function Layout({ children }: LayoutProps) {
       >
         {showSidebar ? <X size={30} /> : <Menu size={30} />}
       </button>
-    </>
+    </div>
   );
 }

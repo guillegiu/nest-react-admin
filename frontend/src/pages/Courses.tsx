@@ -50,88 +50,89 @@ export default function Courses() {
 
   return (
     <Layout>
-      <h1 className="font-semibold text-3xl mb-5">Manage Courses</h1>
-      <hr />
-      {authenticatedUser.role !== 'user' ? (
-        <button
-          className="btn my-5 flex gap-2 w-full sm:w-auto justify-center"
-          onClick={() => setAddCourseShow(true)}
-        >
-          <Plus /> Add Course
-        </button>
-      ) : null}
+      <div className="main-header">
+        <h1 className="font-semibold text-2xl text-gray-700">Manage Courses</h1>
+      </div>
+      <div className="main-content">
+        {authenticatedUser.role !== 'user' ? (
+          <button
+            className="btn mb-4 flex gap-2 w-full sm:w-auto justify-center items-center"
+            onClick={() => setAddCourseShow(true)}
+          >
+            <Plus size={20} /> Add Course
+          </button>
+        ) : null}
 
-      <div className="table-filter">
-        <div className="flex flex-row gap-5">
+        <div className="flex flex-row gap-5 mb-6">
           <input
             type="text"
-            className="input w-1/2"
+            className="input w-1/2 border-gray-300 rounded-md px-3 py-2"
             placeholder="Name"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
           <input
             type="text"
-            className="input w-1/2"
+            className="input w-1/2 border-gray-300 rounded-md px-3 py-2"
             placeholder="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
-      </div>
 
-      <CoursesTable data={data} isLoading={isLoading} />
+        <CoursesTable data={data} isLoading={isLoading} />
 
-      {/* Add User Modal */}
-      <Modal show={addCourseShow}>
-        <div className="flex">
-          <h1 className="font-semibold mb-3">Add Course</h1>
-          <button
-            className="ml-auto focus:outline-none"
-            onClick={() => {
-              reset();
-              setAddCourseShow(false);
-            }}
+        {/* Add User Modal */}
+        <Modal show={addCourseShow}>
+          <div className="flex">
+            <h1 className="font-semibold mb-3">Add Course</h1>
+            <button
+              className="ml-auto focus:outline-none"
+              onClick={() => {
+                reset();
+                setAddCourseShow(false);
+              }}
+            >
+              <X size={30} />
+            </button>
+          </div>
+          <hr />
+
+          <form
+            className="flex flex-col gap-5 mt-5"
+            onSubmit={handleSubmit(saveCourse)}
           >
-            <X size={30} />
-          </button>
-        </div>
-        <hr />
-
-        <form
-          className="flex flex-col gap-5 mt-5"
-          onSubmit={handleSubmit(saveCourse)}
-        >
-          <input
-            type="text"
-            className="input"
-            placeholder="Name"
-            disabled={isSubmitting}
-            required
-            {...register('name')}
-          />
-          <input
-            type="text"
-            className="input"
-            placeholder="Description"
-            disabled={isSubmitting}
-            required
-            {...register('description')}
-          />
-          <button className="btn" disabled={isSubmitting}>
-            {isSubmitting ? (
-              <Loader className="animate-spin mx-auto" />
-            ) : (
-              'Save'
-            )}
-          </button>
-          {error ? (
-            <div className="text-red-500 p-3 font-semibold border rounded-md bg-red-50">
-              {error}
-            </div>
-          ) : null}
-        </form>
-      </Modal>
+            <input
+              type="text"
+              className="input"
+              placeholder="Name"
+              disabled={isSubmitting}
+              required
+              {...register('name')}
+            />
+            <input
+              type="text"
+              className="input"
+              placeholder="Description"
+              disabled={isSubmitting}
+              required
+              {...register('description')}
+            />
+            <button className="btn" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <Loader className="animate-spin mx-auto" />
+              ) : (
+                'Save'
+              )}
+            </button>
+            {error ? (
+              <div className="text-red-500 p-3 font-semibold border rounded-md bg-red-50">
+                {error}
+              </div>
+            ) : null}
+          </form>
+        </Modal>
+      </div>
     </Layout>
   );
 }

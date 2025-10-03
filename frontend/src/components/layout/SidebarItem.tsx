@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { ChevronRight } from 'react-feather';
+import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 interface SidebarItemProps {
@@ -13,14 +13,15 @@ export default function SidebarItem({
   to,
   active = false,
 }: SidebarItemProps) {
+  const location = useLocation();
+  const isActive = active || location.pathname === to;
+
   return (
     <Link
       to={to}
-      className="no-underline text-black hover:bg-gray-300 rounded-md p-3 transition-colors"
+      className={`no-underline sidebar-item ${isActive ? 'active' : ''}`}
     >
-      <span className="flex gap-5 font-semibold">
-        {children} {active ? <ChevronRight /> : null}
-      </span>
+      {children}
     </Link>
   );
 }

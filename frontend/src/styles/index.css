@@ -24,8 +24,8 @@
 
 @layer components {
   .btn {
-    @apply p-3 bg-blue-500 rounded-md focus:outline-none text-white;
-    @apply hover:bg-blue-700 transition-all;
+    @apply p-3 bg-red-500 rounded-md focus:outline-none text-white;
+    @apply hover:bg-red-700 transition-all;
     @apply focus:ring disabled:opacity-50;
   }
   .btn.danger {
@@ -38,15 +38,27 @@
     @apply p-5 rounded-md bg-white border;
   }
   .table-container {
-    @apply border rounded-lg mt-5 shadow overflow-x-auto;
+    @apply border rounded-lg shadow overflow-x-auto;
   }
   .table-filter {
     @apply flex flex-col lg:flex-row gap-5 rounded-lg p-3 shadow overflow-x-auto border;
   }
   .sidebar {
-    @apply fixed h-full w-72 p-5 shadow flex flex-col transform -translate-x-72 bg-white lg:translate-x-0 transition-transform;
+    @apply fixed h-full w-72 p-5 shadow flex flex-col transform -translate-x-72 bg-gray-900 lg:translate-x-0 transition-transform;
   }
   .sidebar.show {
     @apply translate-x-0 !important;
+  }
+  .sidebar-item {
+    @apply bg-red-500 text-white rounded-md p-3 transition-colors flex items-center gap-3 font-semibold hover:bg-red-600;
+  }
+  .sidebar-item.active {
+    @apply bg-red-600;
+  }
+  .main-header {
+    @apply bg-gray-100 px-6 py-5 border-b;
+  }
+  .main-content {
+    @apply bg-white p-6 flex-1;
   }
 }

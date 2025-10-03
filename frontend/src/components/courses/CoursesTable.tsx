@@ -58,7 +58,7 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
   return (
     <>
       <div className="table-container">
-        <Table columns={['Name', 'Description', 'Created']}>
+        <Table columns={['NAME', 'DESCRIPTION', 'CREATED']}>
           {isLoading
             ? null
             : data.map(({ id, name, description, dateCreated }) => (
@@ -102,7 +102,7 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
               ))}
         </Table>
         {!isLoading && data.length < 1 ? (
-          <div className="text-center my-5 text-gray-500">
+          <div className="text-center my-8 text-gray-400">
             <h1>Empty</h1>
           </div>
         ) : null}
