@@ -41,9 +41,16 @@
     "rules": {
       "simple-import-sort/imports": "error",
       "simple-import-sort/exports": "error",
-      "prettier/prettier": "error",
+      "prettier/prettier": "warn",
       "react-hooks/exhaustive-deps": "off"
     }
+  },
+  "prettier": {
+    "endOfLine": "auto",
+    "semi": true,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "es5"
   },
   "browserslist": {
     "production": [

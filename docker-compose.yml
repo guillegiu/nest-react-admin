@@ -2,6 +2,8 @@ services:
   database:
     image: postgres:alpine
     container_name: database
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_DB: carna-database
       POSTGRES_USER: carna
@@ -11,7 +13,9 @@ services:
     container_name: backend
     build:
       context: backend
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
+    ports:
+      - "5000:5000"
     depends_on:
       - database
     environment:
@@ -27,7 +31,7 @@ services:
     container_name: frontend
     build:
       context: frontend
-      dockerfile: Dockerfile
+      dockerfile: dockerfile
     ports:
       - "3000:80"
     depends_on:

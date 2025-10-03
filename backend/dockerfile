@@ -1,29 +1,36 @@
-FROM node:alpine as build
+FROM node:18-alpine as build
 
 WORKDIR /app
 
-COPY package.json .
-COPY yarn.lock .
 
-RUN yarn
+RUN apk add --no-cache python3 make g++
+
+COPY package.json yarn.lock ./
+
+
+RUN yarn install --frozen-lockfile
+
 
 COPY . .
 
+RUN ls -la /app
+
 RUN yarn build
 
-#---
+RUN ls -la /app
+RUN ls -la /app/dist || (echo "Build failed, showing error:" && yarn build 2>&1)
 
-FROM node:alpine
+#---
+FROM node:18-alpine
 
 WORKDIR /app
 
 ENV NODE_ENV=production
 
-COPY package.json .
-COPY yarn.lock .
+COPY package.json yarn.lock ./
 COPY ormconfig.js .
 
-RUN yarn install --production
+RUN yarn install --frozen-lockfile --production
 
 COPY --from=build /app/dist ./dist
 
