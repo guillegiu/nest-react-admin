@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Menu, X } from 'react-feather';
 
+import Header from './Header';
 import Sidebar from './Sidebar';
 
 interface LayoutProps {
@@ -14,7 +15,10 @@ export default function Layout({ children }: LayoutProps) {
     <div className="flex h-screen">
       <Sidebar className={showSidebar ? 'show' : ''} />
       <div className="flex-1 flex flex-col lg:ml-72">
-        {children}
+        <Header />
+        <main className="flex-1 overflow-auto">
+          {children}
+        </main>
       </div>
       <button
         className={`fixed bottom-5 border shadow-md bg-white p-3 rounded-full transition-all focus:outline-none lg:hidden ${

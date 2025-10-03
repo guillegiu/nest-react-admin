@@ -2,9 +2,11 @@ import React from 'react';
 import { BookOpen, Calendar } from 'react-feather';
 import { useQuery } from 'react-query';
 
+import useTranslation from '../../hooks/useTranslation';
 import courseService from '../../services/CourseService';
 
 export default function RecentCourses() {
+  const { t } = useTranslation();
   const { data: recentCourses, isLoading } = useQuery(
     'recent-courses',
     courseService.findRecent
@@ -13,7 +15,7 @@ export default function RecentCourses() {
   if (isLoading) {
     return (
       <div className="card shadow">
-        <h2 className="font-semibold text-xl mb-4">Latest Courses</h2>
+        <h2 className="font-semibold text-xl mb-4">{t('dashboard.recentCourses.title')}</h2>
         <div className="text-center py-4">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-500 mx-auto"></div>
         </div>
@@ -23,7 +25,7 @@ export default function RecentCourses() {
 
   return (
     <div className="card shadow">
-      <h2 className="font-semibold text-xl mb-4">Latest Courses</h2>
+      <h2 className="font-semibold text-xl mb-4">{t('dashboard.recentCourses.title')}</h2>
       {recentCourses && recentCourses.length > 0 ? (
         <div className="space-y-3">
           {recentCourses.map((course) => (
@@ -48,7 +50,7 @@ export default function RecentCourses() {
           ))}
         </div>
       ) : (
-        <p className="text-gray-500 text-center py-4">No courses available</p>
+        <p className="text-gray-500 text-center py-4">{t('dashboard.recentCourses.noCourses')}</p>
       )}
     </div>
   );

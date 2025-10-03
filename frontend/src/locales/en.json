@@ -1,0 +1,126 @@
+{
+  "navigation": {
+    "dashboard": "Dashboard",
+    "courses": "Courses",
+    "profile": "Profile",
+    "users": "Users",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "stats": {
+      "users": "Users",
+      "courses": "Courses",
+      "contents": "Contents"
+    },
+    "recentCourses": {
+      "title": "Latest Courses",
+      "noCourses": "No courses available"
+    }
+  },
+  "profile": {
+    "title": "Profile Settings",
+    "welcome": "Welcome",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "username": "Username",
+    "password": "Password",
+    "passwordPlaceholder": "Password (min 6 characters)",
+    "update": "Update"
+  },
+  "courses": {
+    "title": "Courses",
+    "addCourse": "Add Course",
+    "refresh": "Refresh",
+    "searchPlaceholder": "Search by name or description...",
+    "sortOptions": {
+      "name": "Name",
+      "description": "Description",
+      "dateCreated": "Creation Date"
+    },
+    "form": {
+      "name": "Course Name",
+      "description": "Description",
+      "namePlaceholder": "Enter course name",
+      "descriptionPlaceholder": "Enter course description",
+      "save": "Save Course",
+      "cancel": "Cancel"
+    },
+    "table": {
+      "columns": {
+        "name": "Name",
+        "description": "Description",
+        "created": "Created"
+      },
+      "actions": {
+        "edit": "Edit",
+        "delete": "Delete"
+      },
+      "empty": "No courses found"
+    }
+  },
+  "users": {
+    "title": "Manage Users",
+    "addUser": "Add User",
+    "refresh": "Refresh",
+    "searchPlaceholder": "Search by name, username or email...",
+    "sortOptions": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "username": "Username",
+      "email": "Email",
+      "role": "Role",
+      "dateCreated": "Creation Date"
+    },
+    "form": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "username": "Username",
+      "email": "Email",
+      "password": "Password",
+      "role": "Role",
+      "firstNamePlaceholder": "Enter first name",
+      "lastNamePlaceholder": "Enter last name",
+      "usernamePlaceholder": "Enter username",
+      "emailPlaceholder": "Enter email",
+      "passwordPlaceholder": "Enter password (min 6 characters)",
+      "save": "Save User",
+      "cancel": "Cancel"
+    }
+  },
+  "contents": {
+    "title": "Course Contents",
+    "addContent": "Add Content",
+    "refresh": "Refresh",
+    "searchPlaceholder": "Search by title or description...",
+    "sortOptions": {
+      "title": "Title",
+      "description": "Description",
+      "dateCreated": "Creation Date"
+    },
+    "form": {
+      "title": "Content Title",
+      "description": "Description",
+      "titlePlaceholder": "Enter content title",
+      "descriptionPlaceholder": "Enter content description",
+      "save": "Save Content",
+      "cancel": "Cancel"
+    }
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "confirm": "Confirm",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "save": "Save",
+    "close": "Close"
+  },
+  "roles": {
+    "admin": "Admin",
+    "editor": "Editor",
+    "user": "User"
+  }
+}

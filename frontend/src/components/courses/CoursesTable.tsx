@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 
 import useAuth from '../../hooks/useAuth';
+import useTranslation from '../../hooks/useTranslation';
 import Course from '../../models/course/Course';
 import UpdateCourseRequest from '../../models/course/UpdateCourseRequest';
 import courseService from '../../services/CourseService';
@@ -18,6 +19,7 @@ interface UsersTableProps {
 
 export default function CoursesTable({ data, isLoading }: UsersTableProps) {
   const { authenticatedUser } = useAuth();
+  const { t } = useTranslation();
   const [deleteShow, setDeleteShow] = useState<boolean>(false);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [selectedCourseId, setSelectedCourseId] = useState<string>();
@@ -58,7 +60,7 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
   return (
     <>
       <div className="table-container">
-        <Table columns={['NAME', 'DESCRIPTION', 'CREATED']}>
+        <Table columns={[t('courses.table.columns.name'), t('courses.table.columns.description'), t('courses.table.columns.created')]}>
           {isLoading
             ? null
             : data.map(({ id, name, description, dateCreated }) => (
@@ -83,7 +85,7 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
                           setUpdateShow(true);
                         }}
                       >
-                        Edit
+                        {t('courses.table.actions.edit')}
                       </button>
                     ) : null}
                     {authenticatedUser.role === 'admin' ? (
@@ -94,7 +96,7 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
                           setDeleteShow(true);
                         }}
                       >
-                        Delete
+                        {t('courses.table.actions.delete')}
                       </button>
                     ) : null}
                   </TableItem>
@@ -103,7 +105,7 @@ export default function CoursesTable({ data, isLoading }: UsersTableProps) {
         </Table>
         {!isLoading && data.length < 1 ? (
           <div className="text-center my-8 text-gray-400">
-            <h1>Empty</h1>
+            <h1>{t('courses.table.empty')}</h1>
           </div>
         ) : null}
       </div>

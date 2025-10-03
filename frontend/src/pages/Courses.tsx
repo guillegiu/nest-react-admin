@@ -8,6 +8,7 @@ import Layout from '../components/layout';
 import FilterPagination from '../components/shared/FilterPagination';
 import Modal from '../components/shared/Modal';
 import useAuth from '../hooks/useAuth';
+import useTranslation from '../hooks/useTranslation';
 import CourseQuery from '../models/course/CourseQuery';
 import CreateCourseRequest from '../models/course/CreateCourseRequest';
 import courseService from '../services/CourseService';
@@ -25,6 +26,7 @@ export default function Courses() {
   const [error, setError] = useState<string>();
 
   const { authenticatedUser } = useAuth();
+  const { t } = useTranslation();
   const { data, isLoading, refetch } = useQuery(
     ['courses', filters],
     () => courseService.findAll(filters),
@@ -73,7 +75,7 @@ export default function Courses() {
   return (
     <Layout>
       <div className="main-header">
-        <h1 className="font-semibold text-2xl text-gray-700">Manage Courses</h1>
+        <h1 className="font-semibold text-2xl text-gray-700">{t('courses.title')}</h1>
       </div>
       <div className="main-content">
         {authenticatedUser.role !== 'user' ? (
@@ -82,7 +84,7 @@ export default function Courses() {
             className="btn flex gap-2 w-full sm:w-auto justify-center items-center"
             onClick={() => setAddCourseShow(true)}
           >
-            <Plus size={20} /> Add Course
+            <Plus size={20} /> {t('courses.addCourse')}
           </button>
           <button
             className="btn-secondary flex gap-2 w-full sm:w-auto justify-center items-center"
@@ -90,7 +92,7 @@ export default function Courses() {
             disabled={isLoading}
           >
             <RefreshCw size={20} />
-            Refresh
+            {t('courses.refresh')}
           </button>
         </div>
         ) : null}
@@ -103,7 +105,7 @@ export default function Courses() {
           currentPage={filters.page || 1}
           limit={filters.limit || 10}
           sortOptions={sortOptions}
-          searchPlaceholder="Buscar por nombre o descripción..."
+          searchPlaceholder={t('courses.searchPlaceholder')}
         />
 
         <CoursesTable data={data?.data || []} isLoading={isLoading} />

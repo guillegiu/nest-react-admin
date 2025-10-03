@@ -1,0 +1,126 @@
+{
+  "navigation": {
+    "dashboard": "Panel Principal",
+    "courses": "Cursos",
+    "profile": "Perfil",
+    "users": "Usuarios",
+    "logout": "Cerrar Sesión"
+  },
+  "dashboard": {
+    "title": "Panel Principal",
+    "stats": {
+      "users": "Usuarios",
+      "courses": "Cursos",
+      "contents": "Contenidos"
+    },
+    "recentCourses": {
+      "title": "Últimos Cursos",
+      "noCourses": "No hay cursos disponibles"
+    }
+  },
+  "profile": {
+    "title": "Configuración de Perfil",
+    "welcome": "Bienvenido",
+    "firstName": "Nombre",
+    "lastName": "Apellido",
+    "username": "Usuario",
+    "password": "Contraseña",
+    "passwordPlaceholder": "Contraseña (mínimo 6 caracteres)",
+    "update": "Actualizar"
+  },
+  "courses": {
+    "title": "Cursos",
+    "addCourse": "Agregar Curso",
+    "refresh": "Actualizar",
+    "searchPlaceholder": "Buscar por nombre o descripción...",
+    "sortOptions": {
+      "name": "Nombre",
+      "description": "Descripción",
+      "dateCreated": "Fecha de Creación"
+    },
+    "form": {
+      "name": "Nombre del Curso",
+      "description": "Descripción",
+      "namePlaceholder": "Ingrese el nombre del curso",
+      "descriptionPlaceholder": "Ingrese la descripción del curso",
+      "save": "Guardar Curso",
+      "cancel": "Cancelar"
+    },
+    "table": {
+      "columns": {
+        "name": "Nombre",
+        "description": "Descripción",
+        "created": "Creado"
+      },
+      "actions": {
+        "edit": "Editar",
+        "delete": "Eliminar"
+      },
+      "empty": "No se encontraron cursos"
+    }
+  },
+  "users": {
+    "title": "Gestionar Usuarios",
+    "addUser": "Agregar Usuario",
+    "refresh": "Actualizar",
+    "searchPlaceholder": "Buscar por nombre, usuario o email...",
+    "sortOptions": {
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "username": "Usuario",
+      "email": "Email",
+      "role": "Rol",
+      "dateCreated": "Fecha de Creación"
+    },
+    "form": {
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "username": "Usuario",
+      "email": "Email",
+      "password": "Contraseña",
+      "role": "Rol",
+      "firstNamePlaceholder": "Ingrese el nombre",
+      "lastNamePlaceholder": "Ingrese el apellido",
+      "usernamePlaceholder": "Ingrese el usuario",
+      "emailPlaceholder": "Ingrese el email",
+      "passwordPlaceholder": "Ingrese la contraseña (mínimo 6 caracteres)",
+      "save": "Guardar Usuario",
+      "cancel": "Cancelar"
+    }
+  },
+  "contents": {
+    "title": "Contenidos del Curso",
+    "addContent": "Agregar Contenido",
+    "refresh": "Actualizar",
+    "searchPlaceholder": "Buscar por título o descripción...",
+    "sortOptions": {
+      "title": "Título",
+      "description": "Descripción",
+      "dateCreated": "Fecha de Creación"
+    },
+    "form": {
+      "title": "Título del Contenido",
+      "description": "Descripción",
+      "titlePlaceholder": "Ingrese el título del contenido",
+      "descriptionPlaceholder": "Ingrese la descripción del contenido",
+      "save": "Guardar Contenido",
+      "cancel": "Cancelar"
+    }
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "confirm": "Confirmar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "save": "Guardar",
+    "close": "Cerrar"
+  },
+  "roles": {
+    "admin": "Administrador",
+    "editor": "Editor",
+    "user": "Usuario"
+  }
+}

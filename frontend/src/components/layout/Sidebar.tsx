@@ -3,6 +3,7 @@ import { BookOpen, Home, LogOut, User, Users } from 'react-feather';
 import { Link, useHistory } from 'react-router-dom';
 
 import useAuth from '../../hooks/useAuth';
+import useTranslation from '../../hooks/useTranslation';
 import authService from '../../services/AuthService';
 import SidebarItem from './SidebarItem';
 
@@ -12,6 +13,7 @@ interface SidebarProps {
 
 export default function Sidebar({ className }: SidebarProps) {
   const history = useHistory();
+  const { t } = useTranslation();
 
   const { authenticatedUser, setAuthenticatedUser } = useAuth();
 
@@ -41,17 +43,17 @@ export default function Sidebar({ className }: SidebarProps) {
       </Link>
       <nav className="flex flex-col gap-3 flex-grow">
         <SidebarItem to="/">
-          <Home /> Dashboard
+          <Home /> {t('navigation.dashboard')}
         </SidebarItem>
         <SidebarItem to="/courses">
-          <BookOpen /> Courses
+          <BookOpen /> {t('navigation.courses')}
         </SidebarItem>
         <SidebarItem to="/profile">
-          <User /> Profile
+          <User /> {t('navigation.profile')}
         </SidebarItem>
         {authenticatedUser.role === 'admin' ? (
           <SidebarItem to="/users">
-            <Users /> Users
+            <Users /> {t('navigation.users')}
           </SidebarItem>
         ) : null}
       </nav>
@@ -59,7 +61,7 @@ export default function Sidebar({ className }: SidebarProps) {
         className="text-red-500 rounded-md p-3 transition-colors flex gap-3 justify-center items-center font-semibold focus:outline-none"
         onClick={handleLogout}
       >
-        <LogOut /> Logout
+        <LogOut /> {t('navigation.logout')}
       </button>
     </div>
   );

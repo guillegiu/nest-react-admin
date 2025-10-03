@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 
+import { LanguageProvider } from './context/LanguageContext';
 import useAuth from './hooks/useAuth';
 import Contents from './pages/Contents';
 import Courses from './pages/Courses';
@@ -35,24 +36,26 @@ export default function App() {
   }, []);
 
   return isLoaded ? (
-    // @ts-ignore
-    <Router>
+    <LanguageProvider>
       {/* @ts-ignore */}
-      <Switch>
+      <Router>
         {/* @ts-ignore */}
-        <PrivateRoute exact path="/" component={Dashboard} />
-        {/* @ts-ignore */}
-        <PrivateRoute exact path="/users" component={Users} roles={['admin']} />
-        {/* @ts-ignore */}
-        <PrivateRoute exact path="/courses" component={Courses} />
-        {/* @ts-ignore */}
-        <PrivateRoute exact path="/courses/:id" component={Contents} />
-        {/* @ts-ignore */}
-        <PrivateRoute exact path="/profile" component={Profile} />
+        <Switch>
+          {/* @ts-ignore */}
+          <PrivateRoute exact path="/" component={Dashboard} />
+          {/* @ts-ignore */}
+          <PrivateRoute exact path="/users" component={Users} roles={['admin']} />
+          {/* @ts-ignore */}
+          <PrivateRoute exact path="/courses" component={Courses} />
+          {/* @ts-ignore */}
+          <PrivateRoute exact path="/courses/:id" component={Contents} />
+          {/* @ts-ignore */}
+          <PrivateRoute exact path="/profile" component={Profile} />
 
-        {/* @ts-ignore */}
-        <AuthRoute exact path="/login" component={Login} />
-      </Switch>
-    </Router>
+          {/* @ts-ignore */}
+          <AuthRoute exact path="/login" component={Login} />
+        </Switch>
+      </Router>
+    </LanguageProvider>
   ) : null;
 }
