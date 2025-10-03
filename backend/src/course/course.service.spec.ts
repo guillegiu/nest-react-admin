@@ -51,6 +51,22 @@ const MockService = {
     }),
   delete: jest.fn().mockImplementation((id) => id),
   count: jest.fn().mockReturnValue(10),
+  findRecent: jest.fn().mockImplementation(() => {
+    return [
+      {
+        id: 'recent1',
+        name: 'Recent Course 1',
+        description: 'Most recent course',
+        dateCreated: new Date('2023-12-01'),
+      },
+      {
+        id: 'recent2',
+        name: 'Recent Course 2',
+        description: 'Second most recent course',
+        dateCreated: new Date('2023-11-30'),
+      },
+    ];
+  }),
 };
 
 describe('CourseService', () => {
@@ -144,6 +160,17 @@ describe('CourseService', () => {
     it('should get number of courses', async () => {
       const count = await service.count();
       expect(count).toBe(10);
+    });
+  });
+
+  describe('findRecent', () => {
+    it('should get the array of recent courses', async () => {
+      const recentCourses = await service.findRecent();
+      expect(recentCourses).toHaveLength(2);
+      expect(recentCourses[0].id).toBe('recent1');
+      expect(recentCourses[0].name).toBe('Recent Course 1');
+      expect(recentCourses[1].id).toBe('recent2');
+      expect(recentCourses[1].name).toBe('Recent Course 2');
     });
   });
 });

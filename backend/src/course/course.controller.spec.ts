@@ -44,6 +44,22 @@ const CourseMockService = {
       dateCreated: new Date(),
     };
   }),
+  findRecent: jest.fn().mockImplementation(() => {
+    return [
+      {
+        id: 'recent1',
+        name: 'Recent Course 1',
+        description: 'Most recent course',
+        dateCreated: new Date('2023-12-01'),
+      },
+      {
+        id: 'recent2',
+        name: 'Recent Course 2',
+        description: 'Second most recent course',
+        dateCreated: new Date('2023-11-30'),
+      },
+    ];
+  }),
   update: jest
     .fn()
     .mockImplementation((id: string, updateCourseDto: UpdateCourseDto) => {
@@ -145,6 +161,17 @@ describe('CourseController', () => {
       expect(courses[0].id).toBe('testid1');
       expect(courses[1].name).toBe('test2');
       expect(courses[2].description).toBe('test3');
+    });
+  });
+
+  describe('findRecentCourses', () => {
+    it('should get the array of recent courses', async () => {
+      const recentCourses = await controller.findRecent();
+      expect(recentCourses).toHaveLength(2);
+      expect(recentCourses[0].id).toBe('recent1');
+      expect(recentCourses[0].name).toBe('Recent Course 1');
+      expect(recentCourses[1].id).toBe('recent2');
+      expect(recentCourses[1].name).toBe('Recent Course 2');
     });
   });
 
