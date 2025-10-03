@@ -18,6 +18,7 @@ export default function RecentCourses() {
         <h2 className="font-semibold text-xl mb-4">{t('dashboard.recentCourses.title')}</h2>
         <div className="text-center py-4">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-500 mx-auto"></div>
+          <p className="mt-2 text-gray-500">Loading...</p>
         </div>
       </div>
     );
