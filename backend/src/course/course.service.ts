@@ -32,10 +32,11 @@ export class CourseService {
       );
     }
 
-    if (sortBy) {
+    if (sortBy && sortBy.trim() !== '') {
       const validSortFields = ['name', 'description', 'dateCreated'];
       const field = validSortFields.includes(sortBy) ? sortBy : 'dateCreated';
-      queryBuilder.orderBy(`course.${field}`, sortOrder || 'ASC');
+      const validSortOrder = (sortOrder === 'ASC' || sortOrder === 'DESC') ? sortOrder : 'ASC';
+      queryBuilder.orderBy(`course.${field}`, validSortOrder);
     } else {
       queryBuilder.orderBy('course.dateCreated', 'DESC');
     }

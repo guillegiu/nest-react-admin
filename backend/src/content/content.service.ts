@@ -41,10 +41,11 @@ export class ContentService {
       );
     }
 
-    if (sortBy) {
+    if (sortBy && sortBy.trim() !== '') {
       const validSortFields = ['name', 'description', 'dateCreated'];
       const field = validSortFields.includes(sortBy) ? sortBy : 'dateCreated';
-      queryBuilder.orderBy(`content.${field}`, sortOrder || 'ASC');
+      const validSortOrder = (sortOrder === 'ASC' || sortOrder === 'DESC') ? sortOrder : 'ASC';
+      queryBuilder.orderBy(`content.${field}`, validSortOrder);
     } else {
       queryBuilder.orderBy('content.dateCreated', 'DESC');
     }
@@ -102,10 +103,11 @@ export class ContentService {
       );
     }
 
-    if (sortBy) {
+    if (sortBy && sortBy.trim() !== '') {
       const validSortFields = ['name', 'description', 'dateCreated'];
       const field = validSortFields.includes(sortBy) ? sortBy : 'dateCreated';
-      queryBuilder.orderBy(`content.${field}`, sortOrder || 'ASC');
+      const validSortOrder = (sortOrder === 'ASC' || sortOrder === 'DESC') ? sortOrder : 'ASC';
+      queryBuilder.orderBy(`content.${field}`, validSortOrder);
     } else {
       queryBuilder.orderBy('content.dateCreated', 'DESC');
     }

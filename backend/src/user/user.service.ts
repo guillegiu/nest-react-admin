@@ -41,10 +41,11 @@ export class UserService {
       );
     }
 
-    if (sortBy) {
+    if (sortBy && sortBy.trim() !== '') {
       const validSortFields = ['firstName', 'lastName', 'username', 'role', 'dateCreated'];
       const field = validSortFields.includes(sortBy) ? sortBy : 'dateCreated';
-      queryBuilder.orderBy(`user.${field}`, sortOrder || 'ASC');
+      const validSortOrder = (sortOrder === 'ASC' || sortOrder === 'DESC') ? sortOrder : 'ASC';
+      queryBuilder.orderBy(`user.${field}`, validSortOrder);
     } else {
       queryBuilder.orderBy('user.dateCreated', 'DESC');
     }
