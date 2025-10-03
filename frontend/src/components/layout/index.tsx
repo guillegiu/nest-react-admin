@@ -1,9 +1,13 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Menu, X } from 'react-feather';
 
 import Sidebar from './Sidebar';
 
-export default function Layout({ children }) {
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+export default function Layout({ children }: LayoutProps) {
   const [showSidebar, setShowSidebar] = useState(false);
 
   return (

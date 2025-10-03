@@ -1,4 +1,4 @@
-import { HTMLProps, ReactNode, useEffect, useState } from 'react';
+import React, { HTMLProps, ReactNode, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 interface ModalProps extends HTMLProps<HTMLDivElement> {
@@ -26,7 +26,7 @@ export default function Modal({ children, className, show }: ModalProps) {
 
   return createPortal(
     <div
-      className={`absolute inset-0 z-50 bg-gray-900 bg-opacity-20 w-full h-full 
+      className={`absolute inset-0 z-50 bg-gray-900 bg-opacity-20 w-full h-full
 flex justify-center items-center backdrop-filter backdrop-blur transition-opacity ${
         show ? 'opacity-100' : 'opacity-0'
       } ${isVisible ? 'visible' : 'invisible'}`}

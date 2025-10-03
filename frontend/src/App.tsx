@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
 
 import useAuth from './hooks/useAuth';

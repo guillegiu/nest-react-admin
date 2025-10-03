@@ -1,11 +1,12 @@
 import { useContext } from 'react';
-import { Redirect, Route, RouteProps } from 'react-router';
+import { Redirect, Route, RouteProps } from 'react-router-dom';
 
 import { AuthenticationContext } from './context/AuthenticationContext';
 
-export { Route } from 'react-router';
+export { Route } from 'react-router-dom';
 
 interface PrivateRouteProps extends RouteProps {
+  component: React.ComponentType<any>;
   roles?: string[];
 }
 
@@ -37,7 +38,11 @@ export function PrivateRoute({
   );
 }
 
-export function AuthRoute({ component: Component, ...rest }) {
+interface AuthRouteProps extends RouteProps {
+  component: React.ComponentType<any>;
+}
+
+export function AuthRoute({ component: Component, ...rest }: AuthRouteProps) {
   const { authenticatedUser } = useContext(AuthenticationContext);
 
   return (
