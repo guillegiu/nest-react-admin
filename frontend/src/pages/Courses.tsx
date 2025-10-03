@@ -5,29 +5,32 @@ import { useQuery } from 'react-query';
 
 import CoursesTable from '../components/courses/CoursesTable';
 import Layout from '../components/layout';
+import FilterPagination from '../components/shared/FilterPagination';
 import Modal from '../components/shared/Modal';
 import useAuth from '../hooks/useAuth';
+import CourseQuery from '../models/course/CourseQuery';
 import CreateCourseRequest from '../models/course/CreateCourseRequest';
 import courseService from '../services/CourseService';
 
 export default function Courses() {
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const [filters, setFilters] = useState<CourseQuery>({
+    search: '',
+    sortBy: '',
+    sortOrder: 'ASC',
+    page: 1,
+    limit: 10,
+  });
 
   const [addCourseShow, setAddCourseShow] = useState<boolean>(false);
   const [error, setError] = useState<string>();
 
   const { authenticatedUser } = useAuth();
   const { data, isLoading } = useQuery(
-    ['courses', name, description],
-    () =>
-      courseService.findAll({
-        name: name || undefined,
-        description: description || undefined,
-      }),
+    ['courses', filters],
+    () => courseService.findAll(filters),
     {
       refetchInterval: 1000,
-    },
+    }
   );
 
   const {
@@ -48,6 +51,24 @@ export default function Courses() {
     }
   };
 
+  const handleSearch = (search: string) => {
+    setFilters({ ...filters, search, page: 1 });
+  };
+
+  const handleSort = (sortBy: string, sortOrder: 'ASC' | 'DESC') => {
+    setFilters({ ...filters, sortBy, sortOrder, page: 1 });
+  };
+
+  const handlePageChange = (page: number) => {
+    setFilters({ ...filters, page });
+  };
+
+  const sortOptions = [
+    { value: 'name', label: 'Nombre' },
+    { value: 'description', label: 'Descripción' },
+    { value: 'dateCreated', label: 'Fecha de creación' },
+  ];
+
   return (
     <Layout>
       <div className="main-header">
@@ -63,24 +84,18 @@ export default function Courses() {
           </button>
         ) : null}
 
-        <div className="flex flex-row gap-5 mb-6">
-          <input
-            type="text"
-            className="input w-1/2 border-gray-300 rounded-md px-3 py-2"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <input
-            type="text"
-            className="input w-1/2 border-gray-300 rounded-md px-3 py-2"
-            placeholder="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
+        <FilterPagination
+          onSearch={handleSearch}
+          onSort={handleSort}
+          onPageChange={handlePageChange}
+          total={data?.total || 0}
+          currentPage={filters.page || 1}
+          limit={filters.limit || 10}
+          sortOptions={sortOptions}
+          searchPlaceholder="Buscar por nombre o descripción..."
+        />
 
-        <CoursesTable data={data} isLoading={isLoading} />
+        <CoursesTable data={data?.data || []} isLoading={isLoading} />
 
         {/* Add User Modal */}
         <Modal show={addCourseShow}>

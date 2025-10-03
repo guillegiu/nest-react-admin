@@ -6,8 +6,10 @@ import { useParams } from 'react-router-dom';
 
 import ContentsTable from '../components/content/ContentsTable';
 import Layout from '../components/layout';
+import FilterPagination from '../components/shared/FilterPagination';
 import Modal from '../components/shared/Modal';
 import useAuth from '../hooks/useAuth';
+import ContentQuery from '../models/content/ContentQuery';
 import CreateContentRequest from '../models/content/CreateContentRequest';
 import contentService from '../services/ContentService';
 import courseService from '../services/CourseService';
@@ -16,8 +18,14 @@ export default function Course() {
   const { id } = useParams<{ id: string }>();
   const { authenticatedUser } = useAuth();
 
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
+  const [filters, setFilters] = useState<ContentQuery>({
+    search: '',
+    sortBy: '',
+    sortOrder: 'ASC',
+    page: 1,
+    limit: 10,
+  });
+
   const [addContentShow, setAddContentShow] = useState<boolean>(false);
   const [error, setError] = useState<string>();
 
@@ -31,15 +39,11 @@ export default function Course() {
   } = useForm<CreateContentRequest>();
 
   const { data, isLoading } = useQuery(
-    [`contents-${id}`, name, description],
-    async () =>
-      contentService.findAll(id, {
-        name: name || undefined,
-        description: description || undefined,
-      }),
+    [`contents-${id}`, filters],
+    () => contentService.findAllByCourseId(id, filters),
     {
       refetchInterval: 1000,
-    },
+    }
   );
 
   const saveCourse = async (createContentRequest: CreateContentRequest) => {
@@ -52,6 +56,24 @@ export default function Course() {
       setError(error.response.data.message);
     }
   };
+
+  const handleSearch = (search: string) => {
+    setFilters({ ...filters, search, page: 1 });
+  };
+
+  const handleSort = (sortBy: string, sortOrder: 'ASC' | 'DESC') => {
+    setFilters({ ...filters, sortBy, sortOrder, page: 1 });
+  };
+
+  const handlePageChange = (page: number) => {
+    setFilters({ ...filters, page });
+  };
+
+  const sortOptions = [
+    { value: 'name', label: 'Nombre' },
+    { value: 'description', label: 'Descripción' },
+    { value: 'dateCreated', label: 'Fecha de creación' },
+  ];
 
   return (
     <Layout>
@@ -68,26 +90,22 @@ export default function Course() {
         </button>
       ) : null}
 
-      <div className="table-filter">
-        <div className="flex flex-row gap-5">
-          <input
-            type="text"
-            className="input w-1/2"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <input
-            type="text"
-            className="input w-1/2"
-            placeholder="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        </div>
-      </div>
+      <FilterPagination
+        onSearch={handleSearch}
+        onSort={handleSort}
+        onPageChange={handlePageChange}
+        total={data?.total || 0}
+        currentPage={filters.page || 1}
+        limit={filters.limit || 10}
+        sortOptions={sortOptions}
+        searchPlaceholder="Buscar por nombre o descripción..."
+      />
 
-      <ContentsTable data={data} isLoading={isLoading} courseId={id} />
+      <ContentsTable
+        data={data?.data || []}
+        isLoading={isLoading}
+        courseId={id}
+      />
 
       {/* Add User Modal */}
       <Modal show={addContentShow}>
