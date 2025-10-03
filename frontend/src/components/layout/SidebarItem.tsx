@@ -1,9 +1,9 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 interface SidebarItemProps {
-  children: ReactNode;
+  children: any;
   to: string;
   active?: boolean;
 }
