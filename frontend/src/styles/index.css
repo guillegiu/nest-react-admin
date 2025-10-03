@@ -31,6 +31,11 @@
   .btn.danger {
     @apply bg-red-500 hover:bg-red-700;
   }
+  .btn-secondary {
+    @apply p-3 bg-gray-500 rounded-md focus:outline-none text-white;
+    @apply hover:bg-gray-700 transition-all;
+    @apply focus:ring disabled:opacity-50;
+  }
   .input {
     @apply rounded-md border-gray-300 transition-colors disabled:opacity-50;
   }

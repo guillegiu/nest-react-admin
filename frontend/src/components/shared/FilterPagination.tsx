@@ -34,7 +34,9 @@ export default function FilterPagination({
 
   const handleSortChange = (field: string) => {
     setSortBy(field);
-    onSort(field, sortOrder);
+    if (field && field.trim() !== '') {
+      onSort(field, sortOrder);
+    }
   };
 
   const handleSortOrderChange = (order: 'ASC' | 'DESC') => {

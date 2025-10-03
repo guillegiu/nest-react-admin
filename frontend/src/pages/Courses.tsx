@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Loader, Plus, X } from 'react-feather';
+import { Loader, Plus, RefreshCw, X } from 'react-feather';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 
@@ -25,12 +25,9 @@ export default function Courses() {
   const [error, setError] = useState<string>();
 
   const { authenticatedUser } = useAuth();
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, refetch } = useQuery(
     ['courses', filters],
     () => courseService.findAll(filters),
-    {
-      refetchInterval: 1000,
-    }
   );
 
   const {
@@ -56,7 +53,11 @@ export default function Courses() {
   };
 
   const handleSort = (sortBy: string, sortOrder: 'ASC' | 'DESC') => {
-    setFilters({ ...filters, sortBy, sortOrder, page: 1 });
+    if (sortBy && sortBy.trim() !== '') {
+      setFilters({ ...filters, sortBy, sortOrder, page: 1 });
+    } else {
+      setFilters({ ...filters, sortBy: '', sortOrder: 'ASC', page: 1 });
+    }
   };
 
   const handlePageChange = (page: number) => {
@@ -76,12 +77,22 @@ export default function Courses() {
       </div>
       <div className="main-content">
         {authenticatedUser.role !== 'user' ? (
+        <div className="flex gap-2 mb-4">
           <button
-            className="btn mb-4 flex gap-2 w-full sm:w-auto justify-center items-center"
+            className="btn flex gap-2 w-full sm:w-auto justify-center items-center"
             onClick={() => setAddCourseShow(true)}
           >
             <Plus size={20} /> Add Course
           </button>
+          <button
+            className="btn-secondary flex gap-2 w-full sm:w-auto justify-center items-center"
+            onClick={() => refetch()}
+            disabled={isLoading}
+          >
+            <RefreshCw size={20} />
+            Refresh
+          </button>
+        </div>
         ) : null}
 
         <FilterPagination

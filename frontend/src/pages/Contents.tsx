@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Loader, Plus, X } from 'react-feather';
+import { Loader, Plus, RefreshCw, X } from 'react-feather';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
@@ -38,12 +38,9 @@ export default function Course() {
     reset,
   } = useForm<CreateContentRequest>();
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, refetch } = useQuery(
     [`contents-${id}`, filters],
     () => contentService.findAllByCourseId(id, filters),
-    {
-      refetchInterval: 1000,
-    }
   );
 
   const saveCourse = async (createContentRequest: CreateContentRequest) => {
@@ -62,7 +59,11 @@ export default function Course() {
   };
 
   const handleSort = (sortBy: string, sortOrder: 'ASC' | 'DESC') => {
-    setFilters({ ...filters, sortBy, sortOrder, page: 1 });
+    if (sortBy && sortBy.trim() !== '') {
+      setFilters({ ...filters, sortBy, sortOrder, page: 1 });
+    } else {
+      setFilters({ ...filters, sortBy: '', sortOrder: 'ASC', page: 1 });
+    }
   };
 
   const handlePageChange = (page: number) => {
@@ -82,12 +83,22 @@ export default function Course() {
       </h1>
       <hr />
       {authenticatedUser.role !== 'user' ? (
-        <button
-          className="btn my-5 flex gap-2 w-full sm:w-auto justify-center"
-          onClick={() => setAddContentShow(true)}
-        >
-          <Plus /> Add Content
-        </button>
+        <div className="flex gap-2 my-5">
+          <button
+            className="btn flex gap-2 w-full sm:w-auto justify-center"
+            onClick={() => setAddContentShow(true)}
+          >
+            <Plus /> Add Content
+          </button>
+          <button
+            className="btn-secondary flex gap-2 w-full sm:w-auto justify-center"
+            onClick={() => refetch()}
+            disabled={isLoading}
+          >
+            <RefreshCw size={20} />
+            Refresh
+          </button>
+        </div>
       ) : null}
 
       <FilterPagination

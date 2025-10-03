@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Loader, Plus, X } from 'react-feather';
+import { Loader, Plus, RefreshCw, X } from 'react-feather';
 import { useForm } from 'react-hook-form';
 import { useQuery } from 'react-query';
 
@@ -26,12 +26,9 @@ export default function Users() {
   const [addUserShow, setAddUserShow] = useState<boolean>(false);
   const [error, setError] = useState<string>();
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, refetch } = useQuery(
     ['users', filters],
     () => userService.findAll(filters),
-    {
-      refetchInterval: 1000,
-    }
   );
 
   const {
@@ -57,7 +54,11 @@ export default function Users() {
   };
 
   const handleSort = (sortBy: string, sortOrder: 'ASC' | 'DESC') => {
-    setFilters({ ...filters, sortBy, sortOrder, page: 1 });
+    if (sortBy && sortBy.trim() !== '') {
+      setFilters({ ...filters, sortBy, sortOrder, page: 1 });
+    } else {
+      setFilters({ ...filters, sortBy: '', sortOrder: 'ASC', page: 1 });
+    }
   };
 
   const handlePageChange = (page: number) => {
@@ -78,12 +79,24 @@ export default function Users() {
         <h1 className="font-semibold text-2xl text-gray-700">Manage Users</h1>
       </div>
       <div className="main-content">
-        <button
-          className="btn mb-4 flex gap-2 w-full sm:w-auto justify-center items-center"
-          onClick={() => setAddUserShow(true)}
-        >
-          <Plus size={20} /> Add User
-        </button>
+        <div className="flex gap-2 mb-4">
+          {authenticatedUser.role !== 'user' ? (
+            <button
+              className="btn flex gap-2 w-full sm:w-auto justify-center items-center"
+              onClick={() => setAddUserShow(true)}
+            >
+              <Plus size={20} /> Add User
+            </button>
+          ) : null}
+          <button
+            className="btn-secondary flex gap-2 w-full sm:w-auto justify-center items-center"
+            onClick={() => refetch()}
+            disabled={isLoading}
+          >
+            <RefreshCw size={20} />
+            Refresh
+          </button>
+        </div>
 
         <FilterPagination
           onSearch={handleSearch}
