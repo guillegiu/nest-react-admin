@@ -1,15 +1,16 @@
 import { useContext } from 'react';
-import { Redirect, Route } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router';
+import { Redirect, Route, RouteProps } from 'react-router-dom';
 
 import { AuthenticationContext } from './context/AuthenticationContext';
 
 export { Route } from 'react-router-dom';
 
-interface PrivateRouteProps {
-  component: any;
+interface PrivateRouteProps extends RouteProps {
+  component:
+    | React.ComponentType<RouteComponentProps<any>>
+    | React.ComponentType<any>;
   roles?: string[];
-  exact?: boolean;
-  path?: string;
 }
 
 export function PrivateRoute({
@@ -17,10 +18,10 @@ export function PrivateRoute({
   roles,
   ...rest
 }: PrivateRouteProps) {
-  const { authenticatedUser } = useContext(AuthenticationContext);
+  const auth = useContext(AuthenticationContext);
+  const authenticatedUser = auth?.authenticatedUser;
 
   return (
-    // @ts-ignore
     <Route
       {...rest}
       render={(props) => {
@@ -29,36 +30,33 @@ export function PrivateRoute({
             if (roles.includes(authenticatedUser.role)) {
               return <Component {...props} />;
             } else {
-              // @ts-ignore
               return <Redirect to="/" />;
             }
           } else {
             return <Component {...props} />;
           }
         }
-        // @ts-ignore
         return <Redirect to="/login" />;
       }}
     />
   );
 }
 
-interface AuthRouteProps {
-  component: any;
-  exact?: boolean;
-  path?: string;
+interface AuthRouteProps extends RouteProps {
+  component:
+    | React.ComponentType<RouteComponentProps<any>>
+    | React.ComponentType<any>;
 }
 
 export function AuthRoute({ component: Component, ...rest }: AuthRouteProps) {
-  const { authenticatedUser } = useContext(AuthenticationContext);
+  const auth = useContext(AuthenticationContext);
+  const authenticatedUser = auth?.authenticatedUser;
 
   return (
-    // @ts-ignore
     <Route
       {...rest}
       render={(props) => {
         return authenticatedUser ? (
-          // @ts-ignore
           <Redirect to="/" />
         ) : (
           <Component {...props} />

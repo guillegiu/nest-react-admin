@@ -37,22 +37,14 @@ export default function App() {
 
   return isLoaded ? (
     <LanguageProvider>
-      {/* @ts-ignore */}
       <Router>
-        {/* @ts-ignore */}
         <Switch>
-          {/* @ts-ignore */}
           <PrivateRoute exact path="/" component={Dashboard} />
-          {/* @ts-ignore */}
           <PrivateRoute exact path="/users" component={Users} roles={['admin']} />
-          {/* @ts-ignore */}
           <PrivateRoute exact path="/courses" component={Courses} />
-          {/* @ts-ignore */}
           <PrivateRoute exact path="/courses/:id" component={Contents} />
-          {/* @ts-ignore */}
           <PrivateRoute exact path="/profile" component={Profile} />
 
-          {/* @ts-ignore */}
           <AuthRoute exact path="/login" component={Login} />
         </Switch>
       </Router>

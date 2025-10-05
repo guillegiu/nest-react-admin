@@ -3,19 +3,19 @@ import React, { createContext, Dispatch, SetStateAction, useState } from 'react'
 import User from '../models/user/User';
 
 interface AuthContextValue {
-  authenticatedUser: User;
-  setAuthenticatedUser: Dispatch<SetStateAction<User>>;
+  authenticatedUser: User | undefined;
+  setAuthenticatedUser: Dispatch<SetStateAction<User | undefined>>;
 }
 
-export const AuthenticationContext = createContext<AuthContextValue>(null);
+export const AuthenticationContext = createContext<AuthContextValue | undefined>(
+  undefined
+);
 
-export function AuthenticationProvider({ children }) {
-  const [authenticatedUser, setAuthenticatedUser] = useState<User>();
+export function AuthenticationProvider({ children }: { children: React.ReactNode }) {
+  const [authenticatedUser, setAuthenticatedUser] = useState<User | undefined>();
 
   return (
-    <AuthenticationContext.Provider
-      value={{ authenticatedUser, setAuthenticatedUser }}
-    >
+    <AuthenticationContext.Provider value={{ authenticatedUser, setAuthenticatedUser }}>
       {children}
     </AuthenticationContext.Provider>
   );
